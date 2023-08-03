@@ -1,10 +1,9 @@
 # JsonRepair Sharp
 
-Repair invalid JSON documents. This C# library is a functionally equivalent to the TypeScript jsonrepair library, see https://github.com/josdejong/jsonrepair
+Repair invalid JSON documents.
 
-Use it in a full-fledged application: https://jsoneditoronline.org
+This C# library is meant to be functionally equivalent to the TypeScript jsonrepair library, see https://github.com/josdejong/jsonrepair
 
-Read the background article ["How to fix JSON and validate it with ease"](https://jsoneditoronline.org/indepth/parse/fix-json/)
 
 The following issues can be fixed:
 
@@ -28,6 +27,11 @@ The following issues can be fixed:
     { "id": 2, "name": "Sarah" }
     ```
 
+
+## Use
+
+Use the original typescript version in a full-fledged application: https://jsoneditoronline.org
+Read the background article ["How to fix JSON and validate it with ease"](https://jsoneditoronline.org/indepth/parse/fix-json/)
 
 ## Use
 
