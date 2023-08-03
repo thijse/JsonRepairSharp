@@ -12,8 +12,11 @@ namespace jsonrepairsharp
     {
         public class JsonRepairTests
         {
+            static int fails = 0;
+            static int passes = 0;
             public static void PerformTest()
             {
+
                 // ParseValidJson_ParseFullJsonObject
                 AssertRepair(@"{""a"":2.3e100,""b"":""str"",""c"":null,""d"":false,""e"":[1,2,3]}");
 
@@ -185,19 +188,30 @@ namespace jsonrepairsharp
                 AssertRepair("/* foo bar */\ncallback_123({})", "\n\n{}");
                 AssertRepair("/* foo bar */ callback_123 (  {}  )", "   {}  ");
                 AssertRepair("  /* foo bar */   callback_123({});  ", "     {}  ");
+
+                // FAILS
                 AssertRepair("\n/* foo\nbar */\ncallback_123 ({});\n\n", "\n\n{}\n\n");
+                // Returned "\n{}\n\n" (I think)
+
 
                 //Assert.Throws<JSONRepairError>(() => jsonrepair("callback {}"));
 
-                // RepairInvalidJson_ShouldRepairEscapedStringContents
+                //RepairInvalidJson_ShouldRepairEscapedStringContents
                 AssertRepair("\\\"hello world\\\"", "\"hello world\"");
                 AssertRepair("\\\"hello world\\", "\"hello world\"");
-                AssertRepair("\\\"hello \\\\\\\"world\\\\\\\"\\\"", "\"hello \\\"world\\\"\"");
-                AssertRepair("[\\\"hello \\\\\\\"world\\\\\\\"\\\"]", "[\"hello \\\"world\\\"\"]");
-                AssertRepair("{\\\"stringified\\\": \\\"hello \\\\\\\"world\\\\\\\"\\\"}", "{\"stringified\": \"hello \\\"world\\\"\"}");
+                AssertRepair("\\\"hello \\\\\"world\\\\\"\\\"", "\"hello \\\"world\\\"\"");
+                AssertRepair("[\\\"hello \\\\\"world\\\\\"\\\"]", "[\"hello \\\"world\\\"\"]");
+                AssertRepair("{\\\"stringified\\\": \\\"hello \\\\\"world\\\\\"\\\"}", "{\"stringified\": \"hello \\\"world\\\"\"}");
 
-                AssertRepair("[\\\"hello\\\\, \\\\\\\"world\\\"]", "[\"hello, \",\"world\\\\\",\"]\"");
-                AssertRepair("\\\"hello\\\"", "\"hello\"");
+
+                // FAILS
+                // the following is weird but understandable
+                AssertRepair("[\\\"hello\\, \\\"world\\\"]", "[\"hello, \",\"world\\\\\",\"]\"]");
+                // Returned "[\"hello, \",\"world\\\",\"]\"]" (I think)
+
+                // the following is sort of invalid: the end quote should be escaped too,
+                // but the fixed result is most likely what you want in the end
+                AssertRepair("\\\"hello\"", "\"hello\"");
 
                 // RepairInvalidJson_ShouldStripTrailingCommasFromArray
                 AssertRepair("[1,2,3,]", "[1,2,3]");
@@ -213,7 +227,7 @@ namespace jsonrepairsharp
                 AssertRepair("{\"a\":2  , \n }", "{\"a\":2   \n }");
                 AssertRepair("{\"a\":2/*foo*/,/*foo*/}", "{\"a\":2}");
 
-                AssertRepair("\"{\"a\":2,}\"", "\"{\"a\":2,}\"\"");
+                AssertRepair("\"{a:2,}\"", "\"{a:2,}\"");
 
                 // RepairInvalidJson_ShouldStripTrailingCommaAtTheEnd
                 AssertRepair("4,", "4");
@@ -238,8 +252,8 @@ namespace jsonrepairsharp
                 AssertRepair("[1,2,3", "[1,2,3]");
                 AssertRepair("[1,2,3,", "[1,2,3]");
                 AssertRepair("[[1,2,3,", "[[1,2,3]]");
-                AssertRepair("{\n\"values\":[1,2,3\n}", "{\n\"values\":[1,2,3]}");
-                AssertRepair("{\n\"values\":[1,2,3\n", "{\n\"values\":[1,2,3]}");
+                AssertRepair("{\n\"values\":[1,2,3\n}", "{\n\"values\":[1,2,3]\n}");
+                AssertRepair("{\n\"values\":[1,2,3\n", "{\n\"values\":[1,2,3]}\n");
 
                 // RepairInvalidJson_ShouldStripMongoDbDataTypes
                 string mongoDocument = "{\n" +
@@ -300,7 +314,7 @@ namespace jsonrepairsharp
 
                 AssertRepair("[\n{},\n{}\n]", "[\n{},\n{}\n]");
 
-                Console.WriteLine("All tests passed!");
+                Console.WriteLine($"passed {passes}, failed: {fails}");
             }
 
             private static void AssertRepair(string text)
@@ -313,10 +327,12 @@ namespace jsonrepairsharp
                 string result = JsonRepair.RepairJson(text);
                 if (result == expected)
                 {
+                    passes++;
                     Console.WriteLine("PASS: " + text);
                 }
                 else
                 {
+                    fails++;
                     Console.WriteLine("FAIL: " + text);
                     Console.WriteLine("Expected: " + expected);
                     Console.WriteLine("Actual: " + result);
@@ -327,10 +343,12 @@ namespace jsonrepairsharp
             {
                 if (text == expected)
                 {
+                    passes++;
                     Console.WriteLine("PASS: " + text);
                 }
                 else
                 {
+                    fails++;
                     Console.WriteLine("FAIL: " + text);
                     Console.WriteLine("Expected: " + expected);
                 }
