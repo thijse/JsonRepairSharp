@@ -184,14 +184,12 @@ namespace jsonrepairsharp
                 AssertRepair("callback_123(false);", "false");
                 AssertRepair("callback({}", "{}");
                 AssertRepair("/* foo bar */ callback_123 ({})", " {}");
-                AssertRepair("/* foo bar */ callback_123 ({})", " {}");
-                AssertRepair("/* foo bar */\ncallback_123({})", "\n\n{}");
+                AssertRepair("/* foo bar */ callback_123 ({})", " {}");                
+                AssertRepair("/* foo bar */\ncallback_123({})", "\n\n{}");               //FAILS: Returns "\n{}"
                 AssertRepair("/* foo bar */ callback_123 (  {}  )", "   {}  ");
                 AssertRepair("  /* foo bar */   callback_123({});  ", "     {}  ");
-
-                // FAILS
                 AssertRepair("\n/* foo\nbar */\ncallback_123 ({});\n\n", "\n\n{}\n\n");
-                // Returned "\n{}\n\n" (I think)
+
 
 
                 //Assert.Throws<JSONRepairError>(() => jsonrepair("callback {}"));
@@ -204,10 +202,9 @@ namespace jsonrepairsharp
                 AssertRepair("{\\\"stringified\\\": \\\"hello \\\\\"world\\\\\"\\\"}", "{\"stringified\": \"hello \\\"world\\\"\"}");
 
 
-                // FAILS
+                
                 // the following is weird but understandable
-                AssertRepair("[\\\"hello\\, \\\"world\\\"]", "[\"hello, \",\"world\\\\\",\"]\"]");
-                // Returned "[\"hello, \",\"world\\\",\"]\"]" (I think)
+                AssertRepair("[\\\"hello\\, \\\"world\\\"]", "[\"hello, \",\"world\\\\\",\"]\"]"); // FAILS: Returns "[\"hello, \",\"world\\\",\"]\"]" 
 
                 // the following is sort of invalid: the end quote should be escaped too,
                 // but the fixed result is most likely what you want in the end
