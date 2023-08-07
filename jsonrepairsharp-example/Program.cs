@@ -7,6 +7,8 @@ namespace jsonrepairsharp
         static void Main(string[] args)
         {
 
+            
+
             JsonRepairTests.PerformTest();
             Console.WriteLine("Done!");
 

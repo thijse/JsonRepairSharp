@@ -1,9 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Reflection;
 using System.Text.RegularExpressions;
+
+namespace JsonRepairSharp;
 
 public static class JsonRepair
 {
+    public static bool ThrowExceptions { get; set; } = true;
+
     /// <summary>
     /// Dictionary of control characters and their corresponding escape sequences.
     /// </summary>
@@ -395,32 +398,56 @@ public static class JsonRepair
             return false;
         }
 
-        /// <summary>
-        /// Parses and repairs Newline Delimited JSON (NDJSON): multiple JSON objects separated by a newline character.
-        /// </summary>
-        void ParseNewlineDelimitedJson()
-        {
-            output = "[" + output.TrimEnd() + "]";
-            output = output.Replace("\n", ",");
+        // <summary>
+        // Parses and repairs Newline Delimited JSON (NDJSON): multiple JSON objects separated by a newline character.
+        // </summary>
+        void ParseNewlineDelimitedJson() {
+            // repair NDJSON
+            bool initial = true;
+            bool processedValue = true;
+            while (processedValue) {
+                if (!initial) {
+                    // parse optional comma, insert when missing
+                    var processedComma = ParseCharacter(StringUtils.CodeComma);
+                    if (!processedComma) {
+                        // repair: add missing comma
+                        output = StringUtils.InsertBeforeLastWhitespace(output, ",");
+                    }
+                } else {
+                    initial = false;
+                }
 
-            while (i < text.Length && StringUtils.IsWhitespace(text.CharCodeAt(i)))
-            {
-                i++;
+                processedValue = ParseValue();
             }
 
-            while (i < text.Length)
-            {
-                ParseValue();
-                if (i < text.Length && text.CharCodeAt(i) == StringUtils.CodeComma)
-                {
-                    i++;
-                }
-                while (i < text.Length && StringUtils.IsWhitespace(text.CharCodeAt(i)))
-                {
-                    i++;
-                }
+            if (!processedValue) {
+                // repair: remove trailing comma
+                output = StringUtils.StripLastOccurrence(output, ",");
             }
+
+            // repair: wrap the output inside array brackets
+            output = $"[\n{output}\n]";
         }
+
+
+        //void ParseNewlineDelimitedJson()
+        //{
+        //    output = "[" + output.TrimEnd() + "]";
+        //    output = output.Replace("\n", ",");
+        //    while (i < text.Length && StringUtils.IsWhitespace(text.CharCodeAt(i))) {
+        //        i++;
+        //    }
+
+        //    while (i < text.Length) {
+        //        ParseValue();
+        //        if (i < text.Length && text.CharCodeAt(i) == StringUtils.CodeComma) {
+        //            i++;
+        //        }
+        //        while (i < text.Length && StringUtils.IsWhitespace(text.CharCodeAt(i))) {
+        //            i++;
+        //        }
+        //    }
+        //}
 
         /// <summary>
         /// Parses a JSON string.
@@ -751,27 +778,27 @@ public static class JsonRepair
 
         void ThrowInvalidCharacter(char character)
         {
-            //throw new JSONRepairError($"Invalid character {character}", i);
+            if (ThrowExceptions) throw new JSONRepairError($"Invalid character {character}", i);
         }
 
         void ThrowUnexpectedCharacter()
         {
-            //throw new JSONRepairError($"Unexpected character {text.CharCodeAt(i)}", i);
+            if (ThrowExceptions) throw new JSONRepairError($"Unexpected character {text.CharCodeAt(i)}", i);
         }
 
         void ThrowUnexpectedEnd()
         {
-            //throw new JSONRepairError("Unexpected end of json string", text.Length);
+            if (ThrowExceptions) throw new JSONRepairError("Unexpected end of json string", text.Length);
         }
 
         void ThrowObjectKeyExpected()
         {
-            //throw new JSONRepairError("Object key expected", i);
+            if (ThrowExceptions) throw new JSONRepairError("Object key expected", i);
         }
 
         void ThrowColonExpected()
         {
-            //throw new JSONRepairError("Colon expected", i);
+            if (ThrowExceptions) throw new JSONRepairError("Colon expected", i);
         }
 
         void ThrowInvalidUnicodeCharacter(int start)
@@ -782,7 +809,7 @@ public static class JsonRepair
                 end++;
             }
             string chars = text.Substring(start, end - start);
-            //throw new JSONRepairError($"Invalid unicode character \"{chars}\"", i);
+            if (ThrowExceptions) throw new JSONRepairError($"Invalid unicode character \"{chars}\"", i);
         }
 
         string Got()
@@ -796,6 +823,11 @@ public static class JsonRepair
         }
 
         return output;
+    }
+
+    public static string GetVersion()
+    {
+        return Assembly.GetEntryAssembly()?.GetName().Version?.ToString() ?? "";
     }
 
 }

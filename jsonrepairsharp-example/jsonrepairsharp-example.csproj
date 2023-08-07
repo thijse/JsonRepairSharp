@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <Compile Remove="JsonRepairTestOld.cs" />
+    <Compile Remove="JsonRepairTest_old.cs" />
   </ItemGroup>
 
   <ItemGroup>

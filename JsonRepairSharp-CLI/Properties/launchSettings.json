@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "JsonRepairSharp-CLI": {
+      "commandName": "Project",
+      "commandLineArgs": "-v"
+    }
+  }
+}

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using JsonRepairSharp;
 
 namespace jsonrepairsharp
 {
@@ -16,6 +12,8 @@ namespace jsonrepairsharp
             static int passes = 0;
             public static void PerformTest()
             {
+                AssertRepair("1\n2", "[\n1,2\n]");
+                AssertRepair("[a,b\nc]", "[\"a\",\"b\",\n\"c\"]"); 
 
                 // ParseValidJson_ParseFullJsonObject
                 AssertRepair(@"{""a"":2.3e100,""b"":""str"",""c"":null,""d"":false,""e"":[1,2,3]}");
@@ -184,15 +182,11 @@ namespace jsonrepairsharp
                 AssertRepair("callback_123(false);", "false");
                 AssertRepair("callback({}", "{}");
                 AssertRepair("/* foo bar */ callback_123 ({})", " {}");
-                AssertRepair("/* foo bar */ callback_123 ({})", " {}");                
-                AssertRepair("/* foo bar */\ncallback_123({})", "\n\n{}");               //FAILS: Returns "\n{}"
+                AssertRepair("/* foo bar */ callback_123 ({})", " {}");
+                AssertRepair("/* foo bar */\ncallback_123({})", "\n{}");
                 AssertRepair("/* foo bar */ callback_123 (  {}  )", "   {}  ");
                 AssertRepair("  /* foo bar */   callback_123({});  ", "     {}  ");
                 AssertRepair("\n/* foo\nbar */\ncallback_123 ({});\n\n", "\n\n{}\n\n");
-
-
-
-                //Assert.Throws<JSONRepairError>(() => jsonrepair("callback {}"));
 
                 //RepairInvalidJson_ShouldRepairEscapedStringContents
                 AssertRepair("\\\"hello world\\\"", "\"hello world\"");
@@ -202,9 +196,9 @@ namespace jsonrepairsharp
                 AssertRepair("{\\\"stringified\\\": \\\"hello \\\\\"world\\\\\"\\\"}", "{\"stringified\": \"hello \\\"world\\\"\"}");
 
 
-                
                 // the following is weird but understandable
-                AssertRepair("[\\\"hello\\, \\\"world\\\"]", "[\"hello, \",\"world\\\\\",\"]\"]"); // FAILS: Returns "[\"hello, \",\"world\\\",\"]\"]" 
+                AssertRepair("[\\\"hello\\, \\\"world\\\"]", "[\"hello, \",\"world\\\\\",\"]\"]"); // FAILS: Returns "[\"hello, \",\"world\\\",\"]\"]"
+
 
                 // the following is sort of invalid: the end quote should be escaped too,
                 // but the fixed result is most likely what you want in the end
