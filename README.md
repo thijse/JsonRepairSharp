@@ -1,11 +1,22 @@
 # JsonRepair Sharp
 
-Repair invalid JSON documents.
+Jsonrepair Sharp is a near-literal translation of the TypeScript JsonRepair library, see https://github.com/josdejong/jsonrepair
 
-This C# library is meant to be functionally equivalent to the TypeScript jsonrepair library, see https://github.com/josdejong/jsonrepair
+The jsonrepair library is basically an extended JSON parser. It parses the provided JSON document c haracter by character. When it encounters a non-valid JSON structures it wil look to see it it can reconstruct the intended JSON. For example, after encountering an opening bracket {, it expects a key wrapped in double quotes. When it encounters a key without quotes, or wrapped in other quote characters, it will change these to double quotes instead.
 
+The library has many uses, such as:
 
-The following issues can be fixed:
+1. Convert from an a Word document
+1. Convert from objects with a JSON-like structure, such as Javascript
+1. Convert from a string containing a JSON document
+1. Convert from MongoDB output
+1. Convert from Newline Delimited JSON logs
+1. Convert from JSON dialects
+1. Convert from Truncated or corrupted JSON.
+
+But with the advent of Language Model Models (LLMs) there is yet another use-case. LLMs are notoriously bad in consistently outputting well-formed datastructures, even as simple as JSON. Requiry-ing is expensive and time consuming.  Jsonrepair comes to the rescue by repair these JSON modules files, and increasing changes of smooth processing.
+
+*The library can fix the  following issues:*
 
 - Add missing quotes around keys
 - Add missing escape characters
@@ -33,7 +44,7 @@ The following issues can be fixed:
 Use the original typescript version in a full-fledged application: https://jsoneditoronline.org
 Read the background article ["How to fix JSON and validate it with ease"](https://jsoneditoronline.org/indepth/parse/fix-json/)
 
-## Use
+## Code example
 
 
 ```cs
@@ -52,6 +63,34 @@ Read the background article ["How to fix JSON and validate it with ease"](https:
      Console.WriteLine(err.Message);
      Console.WriteLine("Position: " + err.Data["Position"]);
  }
+```
+
+### Command Line Interface (CLI)
+
+The github archive comes with a `jsonrepair` cli tool, it can be used on the command line. To use, build JsonRepair-CLI.
+
+Usage:
+
+```
+$ jsonrepair "inputfilename.json" {OPTIONS}
+```
+
+Options:
+
+```
+--version,   -v                         Show application version
+--help,      -h                         Show help
+--new,       -n {"outputfilename.json"} Write to new file
+--overwrite, -o                         Replace the input file
+```
+
+Example usage:
+
+```
+$ jsonrepair "broken.json"                         # Repair a file, output to console
+$ jsonrepair "broken.json" > "repaired.json"       # Repair a file, output to command line and pipe to file
+$ jsonrepair "broken.json" -n "repaired.json"      # Repair a file, output to command line and pipe to file
+$ jsonrepair "broken.json" --overwrite             # Repair a file, replace the input json file
 ```
 
 ## Alternatives:
