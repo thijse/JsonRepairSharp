@@ -9,8 +9,4 @@
     <Deterministic>false</Deterministic>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Compile Remove="JsonRepair - Copy.cs" />
-  </ItemGroup>
-
 </Project>
