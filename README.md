@@ -109,6 +109,10 @@ Similar libraries:
 - https://github.com/josdejong/jsonrepair
 - https://github.com/RyanMarcus/dirty-json
 
+## Acknowledgements
+
+Thanks go out to Jos de Jong, who not only did all the heavy lifting in the original jsonrepair for typescript library, but also patiently helped getting this port to pass all unit tests. 
+
 ## License
 
 Released under the [ISC license](LICENSE.md).
