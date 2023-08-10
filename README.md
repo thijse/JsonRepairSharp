@@ -38,14 +38,12 @@ But with the advent of Language Model Models (LLMs) there is yet another use-cas
     { "id": 2, "name": "Sarah" }
     ```
 
-
 ## Use
 
 Use the original typescript version in a full-fledged application: https://jsoneditoronline.org
 Read the background article ["How to fix JSON and validate it with ease"](https://jsoneditoronline.org/indepth/parse/fix-json/)
 
 ## Code example
-
 
 ```cs
  try
@@ -97,9 +95,7 @@ $ jsonrepair "broken.json" --overwrite             # Repair a file, replace the 
 
 The archive also comes with a minimal GUI that shows a somewhat simplistic diff between the original and fixed JSON
 ![JSOn Repair GUI](/Assets/JsonRepairGui.png?raw=true )
-
-[JSOn Repair GUI](https://github.com/thijse/JsonRepairSharp/blob/main/Assets/JsonRepairGui.png?raw=true)
-This GUI heavily leans on the [FastColoredTextBox](https://github.com/PavelTorgashov/FastColoredTextBox) library and the the diff sample in particular.
+This GUI heavily leans on the awesome [FastColoredTextBox](https://github.com/PavelTorgashov/FastColoredTextBox) library and the the diff sample in particular.
 
 
 
