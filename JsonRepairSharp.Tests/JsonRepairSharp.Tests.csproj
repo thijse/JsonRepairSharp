@@ -13,7 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\jsonrepairsharp\jsonrepairsharp.csproj" />
+    <ProjectReference Include="..\JsonRepairSharp\JsonRepairSharp.csproj" />
   </ItemGroup>
 
 </Project>

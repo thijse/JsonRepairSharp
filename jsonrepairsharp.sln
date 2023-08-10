@@ -7,11 +7,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JsonRepairSharp", "JsonRepa
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JsonRepairSharp.Tests", "JsonRepairSharp.Tests\JsonRepairSharp.Tests.csproj", "{228E9852-AB2A-4BAF-A822-160BA7AFFF36}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "jsonrepairsharp-example", "jsonrepairsharp-example\jsonrepairsharp-example.csproj", "{9AB8B1E7-E46A-46D1-BBD4-889D0DCCF862}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JsonRepairSharp-Minimal", "JsonRepairSharp-Minimal\JsonRepairSharp-Minimal.csproj", "{9AB8B1E7-E46A-46D1-BBD4-889D0DCCF862}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JsonRepairSharp-CLI", "JsonRepairSharp-CLI\JsonRepairSharp-CLI.csproj", "{0E93551E-2341-4BD2-A8DD-5221F7C58B9D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JsonRepairSharp-GUI", "JsonRepairSharp-GUI\JsonRepairSharp-GUI.csproj", "{6E346FD6-FE34-428C-AE17-9D1B5469E052}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JsonRepairSharp-GUI", "JsonRepairSharp-GUI\JsonRepairSharp-GUI.csproj", "{6E346FD6-FE34-428C-AE17-9D1B5469E052}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

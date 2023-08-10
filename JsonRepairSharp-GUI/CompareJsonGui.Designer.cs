@@ -1,4 +1,4 @@
-﻿namespace Tester
+﻿namespace JsonRepairSharp_GUI
 {
     partial class CompareJsonGui
     {

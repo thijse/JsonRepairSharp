@@ -15,7 +15,7 @@
     <SelfContained>true</SelfContained>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\jsonrepairsharp\jsonrepairsharp.csproj" />
+    <ProjectReference Include="..\JsonRepairSharp\JsonRepairSharp.csproj" />
   </ItemGroup>
 
 </Project>

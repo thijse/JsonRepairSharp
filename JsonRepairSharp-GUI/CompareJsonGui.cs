@@ -3,9 +3,9 @@ using System.Text;
 using FastColoredTextBoxNS;
 using FastColoredTextBoxNS.Text;
 using FastColoredTextBoxNS.Types;
-using Tester.DiffMergeStuffs;
+using JsonRepairSharp_GUI.DiffMergeStuffs;
 
-namespace Tester
+namespace JsonRepairSharp_GUI
 {
     public partial class CompareJsonGui : Form
     {
@@ -17,7 +17,7 @@ namespace Tester
         public CompareJsonGui()
         {
             InitializeComponent();
-
+            JsonRepairSharp.JsonRepair.ThrowExceptions = false;
 
             greenStyle = new MarkerStyle(new SolidBrush(Color.FromArgb(50, Color.Lime)));
             redStyle = new MarkerStyle(new SolidBrush(Color.FromArgb(50, Color.Red)));

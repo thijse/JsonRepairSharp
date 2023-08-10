@@ -93,6 +93,14 @@ $ jsonrepair "broken.json" -n "repaired.json"      # Repair a file, output to co
 $ jsonrepair "broken.json" --overwrite             # Repair a file, replace the input json file
 ```
 
+### GUI
+
+The archive also comes with a minimal GUI that shows a somewhat simplistic diff between the original and fixed JSON
+![JSOn Repair GUI](http://Assets/JsonRepairGui.png)
+This GUI heavily leans on the [FastColoredTextBox](https://github.com/PavelTorgashov/FastColoredTextBox) library and the the diff sample in particular.
+
+
+
 ## Alternatives:
 
 Similar libraries:

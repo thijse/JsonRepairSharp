@@ -1,4 +1,3 @@
-using Tester;
 
 namespace JsonRepairSharp_GUI
 {

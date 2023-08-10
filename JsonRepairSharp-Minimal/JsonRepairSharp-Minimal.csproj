@@ -8,12 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="JsonRepairTestOld.cs" />
-    <Compile Remove="JsonRepairTest_old.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\jsonrepairsharp\jsonrepairsharp.csproj" />
+    <ProjectReference Include="..\JsonRepairSharp\JsonRepairSharp.csproj" />
   </ItemGroup>
 
 </Project>
