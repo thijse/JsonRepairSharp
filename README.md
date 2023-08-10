@@ -46,6 +46,9 @@ Read the background article ["How to fix JSON and validate it with ease"](https:
 ## Code example
 
 ```cs
+
+// Enable throwing exceptions when JSON code can not be repaired or even understood (enabled by default)
+JsonRepair.ThrowExceptions = true;
  try
  {
      // The following is invalid JSON: is consists of JSON contents copied from 
