@@ -12,7 +12,9 @@ namespace jsonrepairsharp
             static int passes = 0;
             public static void PerformTest()
             {
-                AssertRepair("1\n2", "[\n1,2\n]");
+                AssertRepair("\"\"");
+
+                AssertRepair("1\n2", "[\n1,\n2\n]");
                 AssertRepair("[a,b\nc]", "[\"a\",\"b\",\n\"c\"]"); 
 
                 // ParseValidJson_ParseFullJsonObject

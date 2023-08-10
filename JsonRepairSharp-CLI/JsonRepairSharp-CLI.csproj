@@ -11,7 +11,9 @@
     <AssemblyVersion>1.2.1.*</AssemblyVersion>
     <Deterministic>false</Deterministic>
   </PropertyGroup>
-
+  <PropertyGroup>
+    <SelfContained>true</SelfContained>
+  </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\jsonrepairsharp\jsonrepairsharp.csproj" />
   </ItemGroup>
