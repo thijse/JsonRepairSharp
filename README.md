@@ -78,10 +78,10 @@ $ jsonrepair "inputfilename.json" {OPTIONS}
 Options:
 
 ```
---version,   -v                         Show application version
---help,      -h                         Show help
---new,       -n {"outputfilename.json"} Write to new file
---overwrite, -o                         Replace the input file
+--version,   -v                       Show application version
+--help,      -h                       Show help
+--new,       -n "outputfilename.json" Write to new file
+--overwrite, -o                       Replace the input file
 ```
 
 Example usage:
