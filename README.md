@@ -1,4 +1,4 @@
-![JSOn Repair logo](/Assets/logo.png?raw=true )
+![JSOn Repair logo](/Assets/logo_small.png?raw=true )
 # JsonRepair Sharp
 
 Jsonrepair Sharp is a near-literal translation of the TypeScript JsonRepair library, see https://github.com/josdejong/jsonrepair
