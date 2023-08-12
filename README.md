@@ -1,3 +1,5 @@
+[![.NET](https://github.com/thijse/JsonRepairSharp/actions/workflows/dotnet.yml/badge.svg)](https://github.com/thijse/JsonRepairSharp/actions/workflows/dotnet.yml)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 ![JSOn Repair logo](/Assets/logo_small.png?raw=true )
 # JsonRepair Sharp
 
