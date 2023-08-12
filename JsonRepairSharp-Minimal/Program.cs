@@ -1,4 +1,5 @@
 ﻿using JsonRepairSharp;
+using static JsonRepairSharp.JsonRepair.InputType;
 
 namespace JsonRepairSharpMinimal
 {
@@ -7,10 +8,11 @@ namespace JsonRepairSharpMinimal
         static void Main(string[] args)
         {
             JsonRepair.ThrowExceptions = true;
+            JsonRepair.Context         = LLM;
 
             try
             {
-                AssertRepair("{name: 'John'}", "{\"name\": \"John\"}");
+				AssertRepair("{name: 'John'}", "{\"name\": \"John\"}");
             }
             catch (JSONRepairError err)
             {
@@ -36,6 +38,8 @@ namespace JsonRepairSharpMinimal
                 Console.WriteLine("Actual: " + result);
             }
         }
+
+        private static void AssertRepair(string text) { AssertRepair(text, text); }
 
     }
 }

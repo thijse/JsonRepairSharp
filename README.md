@@ -1,3 +1,4 @@
+![JSOn Repair logo](/Assets/logo.png?raw=true )
 # JsonRepair Sharp
 
 Jsonrepair Sharp is a near-literal translation of the TypeScript JsonRepair library, see https://github.com/josdejong/jsonrepair
@@ -38,6 +39,10 @@ But with the advent of Language Model Models (LLMs) there is yet another use-cas
     { "id": 2, "name": "Sarah" }
     ```
 
+*In LLM mode*
+- Strip characters heading the JSON opening brace and  trailing the JSON closing brace.
+
+
 ## Use
 
 Use the original typescript version in a full-fledged application: https://jsoneditoronline.org
@@ -49,6 +54,10 @@ Read the background article ["How to fix JSON and validate it with ease"](https:
 
 // Enable throwing exceptions when JSON code can not be repaired or even understood (enabled by default)
 JsonRepair.ThrowExceptions = true;
+
+// Set context as LLM or Other. This will repair the json slightly differently. (Other by default)
+JsonRepair.Context         = Other;
+
  try
  {
      // The following is invalid JSON: is consists of JSON contents copied from 
@@ -83,6 +92,7 @@ Options:
 --help,      -h                       Show help
 --new,       -n "outputfilename.json" Write to new file
 --overwrite, -o                       Replace the input file
+--llm,       -l                       Parse in LLM mode
 ```
 
 Example usage:
@@ -90,7 +100,7 @@ Example usage:
 ```
 $ jsonrepair "broken.json"                         # Repair a file, output to console
 $ jsonrepair "broken.json" > "repaired.json"       # Repair a file, output to command line and pipe to file
-$ jsonrepair "broken.json" -n "repaired.json"      # Repair a file, output to command line and pipe to file
+$ jsonrepair "broken.json" -n -l "repaired.json"   # Repair a file in LLM mode, output to command line and pipe to file
 $ jsonrepair "broken.json" --overwrite             # Repair a file, replace the input json file
 ```
 

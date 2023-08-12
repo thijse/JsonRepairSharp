@@ -1,4 +1,6 @@
-﻿namespace JsonRepairSharp_CLI
+﻿using JsonRepairSharp;
+
+namespace JsonRepairSharp_CLI
 {
     internal class Program
     {
@@ -14,6 +16,7 @@
                 Console.WriteLine("--help,      -h                         Show help");
                 Console.WriteLine("--new,       -n {\"outputfilename.json\"} Write to new file");
                 Console.WriteLine("--overwrite, -o                         Replace the input file");
+                Console.WriteLine("--llm,       -l                         Parse in LLM mode");
                 return;
             }
 
@@ -33,6 +36,11 @@
                 var inputFile      = File.ReadAllText(inputFileName);
                 var outputFileName = "";
                 var outputFile     = "";
+
+                if (commandLineOptions.ContainsKey("l", "llm"))
+                {
+                    JsonRepairSharp.JsonRepair.Context = JsonRepair.InputType.LLM;
+                }
 
                 if (commandLineOptions.ContainsKey("n", "new"))
                 {
