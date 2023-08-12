@@ -3,6 +3,7 @@ using System.Text;
 using FastColoredTextBoxNS;
 using FastColoredTextBoxNS.Text;
 using FastColoredTextBoxNS.Types;
+using JsonRepairSharp;
 using JsonRepairSharp_GUI.DiffMergeStuffs;
 
 namespace JsonRepairSharp_GUI
@@ -94,7 +95,7 @@ namespace JsonRepairSharp_GUI
             }
 
             _linesLeft = File.ReadAllLines(fileName, Encoding.Default);
-
+            JsonRepairSharp.JsonRepair.Context = checkBoxIsLLM.Checked ? JsonRepair.InputType.LLM: JsonRepair.InputType.Other;
             var jsonRepaired = JsonRepairSharp.JsonRepair.RepairJson(string.Join("\n", _linesLeft));
             if (string.IsNullOrEmpty(jsonRepaired)) return;
             _linesRight = jsonRepaired.Split("\n");
@@ -135,7 +136,7 @@ namespace JsonRepairSharp_GUI
             }
 
             Cursor = Cursors.WaitCursor;
-            fctb2.SaveToFile(fileName, Encoding.Default);
+            File.WriteAllLines(fileName,_linesRight);
             Cursor = Cursors.Default;
             MessageBox.Show(this, "File succesfully saved", "File saved");
         }
@@ -177,6 +178,11 @@ namespace JsonRepairSharp_GUI
         private void buttonSave_Click(object sender, EventArgs e)
         {
             WriteRight();
+        }
+
+        private void checkBoxIsLLM_CheckedChanged(object sender, EventArgs e)
+        {
+            LoadLeft();
         }
     }
 

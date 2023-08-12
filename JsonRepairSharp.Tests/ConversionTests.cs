@@ -34,6 +34,7 @@ public class JsonRepairTests
         if (result == expected)
         {
             Console.WriteLine("PASS: " + input);
+            Console.WriteLine("Expected & Actual: " + result);
         }
         else
         {
@@ -369,7 +370,7 @@ public class JsonRepairTests
         AssertRepair("{\"a\":2", "{\"a\":2}");
         AssertRepair("{\"a\":2,", "{\"a\":2}");
         AssertRepair("{\"a\":{\"b\":2}", "{\"a\":{\"b\":2}}");
-                AssertRepair("{\n  \"a\":{\"b\":2\n}", "{\n  \"a\":{\"b\":2\n}}");
+        AssertRepair("{\n  \"a\":{\"b\":2\n}", "{\n  \"a\":{\"b\":2\n}}");
         AssertRepair("[{\"b\":2]", "[{\"b\":2}]");
         AssertRepair("[{\"b\":2\n]", "[{\"b\":2}\n]");
         AssertRepair("[{\"i\":1{\"i\":2}]", "[{\"i\":1},{\"i\":2}]");
@@ -563,6 +564,28 @@ public class JsonRepairTests
         AssertRepair("1\n2\n3", "[\n1,\n2,\n3\n]");
         AssertRepair("a\nb", "[\n\"a\",\n\"b\"\n]");
         AssertRepair("a,b", "[\n\"a\",\"b\"\n]");
+    }
+
+    [Test, Description("Repair invalid JSON from LLM by stripping heading & trailing text around Structure")]
+    public void RepairInvalidJson_ShouldStripHeadingAndTrailingText()
+    {
+        JsonRepair.Context = JsonRepair.InputType.LLM;
+        AssertRepair("text outside string \"[1,2,3,] text inside string\"", "[1,2,3]");
+        AssertRepair("callback_123({});", "{}");
+        AssertRepair("text [\n1,2,3\n] text", "[\n1,2,3\n]");
+        AssertRepair("Intro   {\"a\":2} ", "{\"a\":2}");
+        AssertRepair("{“a”:“b”}\n text\n", "{\"a\":\"b\"}");
+        AssertRepair("{} // comment", "{}");
+        JsonRepair.Context = JsonRepair.InputType.Other;
+    }
+
+    [Test, Description("Do not repair invalid JSON from LLM because root object cannot be found in text")]
+    public void RepairInvalidJson_ShouldNotStripHeadingAndTrailingText()
+    {
+        JsonRepair.Context = JsonRepair.InputType.LLM;
+        AssertRepair("\":\"");
+        AssertRepair("\",\"");
+        JsonRepair.Context = JsonRepair.InputType.Other;
     }
 
     [Test, Description("Throw an exception for non-repairable issues")]

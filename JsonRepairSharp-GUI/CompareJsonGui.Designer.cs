@@ -46,6 +46,7 @@
             splitContainer1 = new SplitContainer();
             buttonSave = new Button();
             buttonOpen = new Button();
+            checkBoxIsLLM = new CheckBox();
             ((System.ComponentModel.ISupportInitialize)fctb1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)fctb2).BeginInit();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
@@ -176,7 +177,6 @@
             fctb1.DisabledColor = Color.FromArgb(100, 180, 180, 180);
             fctb1.Dock = DockStyle.Fill;
             fctb1.FindForm = null;
-            fctb1.Font = new Font("Courier New", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
             fctb1.GoToForm = null;
             fctb1.Hotkeys = resources.GetString("fctb1.Hotkeys");
             fctb1.IsReplaceMode = false;
@@ -207,7 +207,6 @@
             fctb2.DisabledColor = Color.FromArgb(100, 180, 180, 180);
             fctb2.Dock = DockStyle.Fill;
             fctb2.FindForm = null;
-            fctb2.Font = new Font("Courier New", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
             fctb2.GoToForm = null;
             fctb2.Hotkeys = resources.GetString("fctb2.Hotkeys");
             fctb2.IsReplaceMode = false;
@@ -248,7 +247,7 @@
             // 
             buttonSave.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             buttonSave.Enabled = false;
-            buttonSave.Image = JsonRepairSharp_GUI.Properties.Resources.Save;
+            buttonSave.Image = Properties.Resources.Save;
             buttonSave.Location = new Point(791, 40);
             buttonSave.Margin = new Padding(4, 3, 4, 3);
             buttonSave.Name = "buttonSave";
@@ -261,7 +260,7 @@
             // buttonOpen
             // 
             buttonOpen.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            buttonOpen.Image = JsonRepairSharp_GUI.Properties.Resources.Open;
+            buttonOpen.Image = Properties.Resources.Open;
             buttonOpen.Location = new Point(791, 10);
             buttonOpen.Margin = new Padding(4, 3, 4, 3);
             buttonOpen.Name = "buttonOpen";
@@ -271,11 +270,24 @@
             buttonOpen.UseVisualStyleBackColor = true;
             buttonOpen.Click += buttonOpen_Click;
             // 
+            // checkBoxIsLLM
+            // 
+            checkBoxIsLLM.AutoSize = true;
+            checkBoxIsLLM.CheckAlign = ContentAlignment.MiddleRight;
+            checkBoxIsLLM.Location = new Point(28, 74);
+            checkBoxIsLLM.Name = "checkBoxIsLLM";
+            checkBoxIsLLM.Size = new Size(92, 19);
+            checkBoxIsLLM.TabIndex = 31;
+            checkBoxIsLLM.Text = "LLM context";
+            checkBoxIsLLM.UseVisualStyleBackColor = true;
+            checkBoxIsLLM.CheckedChanged += checkBoxIsLLM_CheckedChanged;
+            // 
             // CompareJsonGui
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(842, 504);
+            Controls.Add(checkBoxIsLLM);
             Controls.Add(buttonOpen);
             Controls.Add(buttonSave);
             Controls.Add(splitContainer1);
@@ -320,5 +332,6 @@
         private System.Windows.Forms.SplitContainer splitContainer1;
         private Button buttonSave;
         private Button buttonOpen;
+        private CheckBox checkBoxIsLLM;
     }
 }

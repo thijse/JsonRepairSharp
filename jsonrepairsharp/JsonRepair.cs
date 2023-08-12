@@ -24,7 +24,15 @@ namespace JsonRepairSharp;
 
 public static class JsonRepair
 {
+    public enum InputType
+    {
+        LLM,
+        Other
+    }
+
     public static bool ThrowExceptions { get; set; } = true;
+    public static InputType Context    { get; set; } = InputType.Other;
+
 
     /// <summary>
     /// Dictionary of control characters and their corresponding escape sequences.
@@ -59,6 +67,7 @@ public static class JsonRepair
     private static string  _text    = "" ; // input text
     private static string  _output  = "" ; // generated output
     private static readonly MatchingQuotes MatchingQuotes = new MatchingQuotes(); // Helper class to match opening and closing quotes
+    private static int _closeCode   ='\0';
 
     /// <summary>
     /// Repairs a string containing an invalid JSON document.
@@ -71,7 +80,15 @@ public static class JsonRepair
         _i      = 0;
         _output = "";
         _text   = input;
- 
+        bool strippedHeadingText = false;
+
+        if (Context == InputType.LLM)
+        {
+            // LLMs are prone to adding an introduction and trailing explanation to any data structure
+            // Repair: remove these first
+            strippedHeadingText = ParseAndSkipAllUntilFirstBrace();
+        }
+
         var processed = ParseValue();
         if (!processed) { ThrowUnexpectedEnd(); }
 
@@ -79,6 +96,16 @@ public static class JsonRepair
         if (processedComma)
         {
             ParseWhitespaceAndSkipComments();
+        }
+
+
+        // trailing characters after end of the root level object
+        // For LLMs we will skip this, as it is likely trailing text. e.g. giving explanation on the structure above
+        if (Context == InputType.LLM && strippedHeadingText)
+        {
+            //Remove everything after final bracket
+            var strippedTrailingText = ParseAndStripUntilLastBrace();
+            if (strippedTrailingText) return _output;
         }
 
         if (StringUtils.IsStartOfValue(_text.CharCodeAt(_i).ToString()) && StringUtils.EndsWithCommaOrNewline(_output))
@@ -109,6 +136,9 @@ public static class JsonRepair
         return _output;
     }
 
+
+
+
     /// <summary>
     /// Parses a JSON value.
     /// </summary>
@@ -127,6 +157,49 @@ public static class JsonRepair
 
         return processed;
     }
+
+    private static bool ParseAndSkipAllUntilFirstBrace()
+    {
+        var start = _i;
+
+        while (
+            _text.CharCodeAt(_i) != StringUtils.CodeOpeningBracket &&
+            _text.CharCodeAt(_i) != StringUtils.CodeOpeningBrace)
+        {
+            _i++;
+            if (_i >= _text.Length )
+            {
+                // Could not find any start brace, abort attempt
+                _i = start; return false;
+            }
+        }
+        _closeCode = (_text.CharCodeAt(_i) == StringUtils.CodeOpeningBracket) ? StringUtils.CodeClosingBracket :
+                     (_text.CharCodeAt(_i) == StringUtils.CodeOpeningBrace  ) ? StringUtils.CodeClosingBrace : '\0';
+        if (_text.IndexOf((char)_closeCode) == -1)
+        {
+            // Could not find any matching closing brace, abort attempt
+            _i = start; return false;
+        }
+
+        return true;
+    }
+
+    private static bool ParseAndStripUntilLastBrace()
+    {
+        var start = _output.Length-1;
+        var o     = _output.Length-1;
+        while (_output.CharCodeAt(o) != _closeCode && o > 0) { o--; }
+
+        if (o == 0) 
+        {
+            // could not find end brace/bracket, abort attempt
+            return false;
+        }
+        o       = Math.Min(o + 1, _output.Length);
+        _output = _output.Substring(0, o);
+        return true;
+    }
+
 
     /// <summary>
     /// Parses and repairs whitespace in the JSON document.
