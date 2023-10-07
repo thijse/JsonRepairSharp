@@ -6,7 +6,7 @@
 
 Jsonrepair Sharp is a near-literal translation of the TypeScript JsonRepair library, see https://github.com/josdejong/jsonrepair
 
-The jsonrepair library is basically an extended JSON parser. It parses the provided JSON document c haracter by character. When it encounters a non-valid JSON structures it wil look to see it it can reconstruct the intended JSON. For example, after encountering an opening bracket {, it expects a key wrapped in double quotes. When it encounters a key without quotes, or wrapped in other quote characters, it will change these to double quotes instead.
+The jsonrepair library is basically an extended JSON parser. It parses the provided JSON document character by character. When it encounters a non-valid JSON structures it wil look to see it it can reconstruct the intended JSON. For example, after encountering an opening bracket {, it expects a key wrapped in double quotes. When it encounters a key without quotes, or wrapped in other quote characters, it will change these to double quotes instead.
 
 The library has many uses, such as:
 
